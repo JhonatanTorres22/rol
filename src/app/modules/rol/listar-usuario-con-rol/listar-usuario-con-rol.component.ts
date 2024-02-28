@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fromEvent } from 'rxjs';
 import { EliminarUsuarioConPerfil, ListarUsuarioConPerfil } from 'src/app/core/models/rol.model';
 import { RolService } from 'src/app/infraestructura/services/rol.service';
 import Swal from 'sweetalert2';
+import { AddEditUsuarioConRolComponent } from '../add-edit-usuario-con-rol/add-edit-usuario-con-rol.component';
 
 @Component({
   selector: 'app-listar-usuario-con-rol',
   templateUrl: './listar-usuario-con-rol.component.html',
   styleUrls: ['./listar-usuario-con-rol.component.scss']
 })
-export class ListarUsuarioConRolComponent implements OnInit {
+export class ListarUsuarioConRolComponent implements OnInit, OnDestroy {
   loading : boolean = false;
+  modalAbierto : boolean = false;
   displayedColumns: string[] = ['nombres', 'apellidoPaterno', 'apellidoMaterno', 'nDocumento','perfil', 'acciones'];
   dataSource:MatTableDataSource<ListarUsuarioConPerfil>;
 
-
-  isBordered = false;
-  bordered$ = fromEvent(window, 'isBordered');
   constructor(
+    private ngZone: NgZone,
     private dialog: MatDialog,
     private rolService:RolService
   ){
@@ -29,6 +29,43 @@ export class ListarUsuarioConRolComponent implements OnInit {
   ngOnInit(): void {
     this.listarUsuarioConPerfil();
     this.loading = true;
+    window.addEventListener('abrirModal', (event: Event) => {
+      this.ngZone.run(() => {
+        this.openModal(event as CustomEvent<any>);
+      });
+  });
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('abrirModal', (event: Event) => {
+      this.openModal(event as CustomEvent<any>);
+  });
+  }
+  openModal(event:CustomEvent):void{
+    if(!this.modalAbierto){
+      this.modalAbierto = true;
+      console.log('Modal abierto con mensaje:' , event.detail.mensaje);
+      const dialogRef = this.dialog.open(AddEditUsuarioConRolComponent, {
+        disableClose: true,
+        width: '600px',
+        data: { mensaje: event.detail.mensaje}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result == 'Guardar'){
+          setTimeout(() => {
+            console.log('guardando....');
+            this.listarUsuarioConPerfil();
+          }, 300);
+        }
+        else {
+          console.log('CERRANDO MODAL...');
+        }
+        this.modalAbierto = false;
+      });
+    }
+    else{
+      console.log('YA ESTÁ ABIERTO');
+    }
   }
 
   listarUsuarioConPerfil(){

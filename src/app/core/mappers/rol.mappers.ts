@@ -1,5 +1,5 @@
-import { ListarResponsableDTO, ListarRolDTO, ListarUsuarioConPerfilDTO } from "src/app/infraestructura/dto/rol.dto";
-import { ListarResponsable, ListarRol, ListarUsuarioConPerfil } from "../models/rol.model";
+import { AgregarPerfilConUsuarioDTO, ListarResponsableDTO, ListarRolDTO, ListarUsuarioConPerfilDTO } from "src/app/infraestructura/dto/rol.dto";
+import { AgregarPerfilConUsuario, ListarResponsable, ListarRol, ListarUsuarioConPerfil } from "../models/rol.model";
 
 export class RolMapper{
     static fromApiToDomain(apiListarRol: ListarUsuarioConPerfilDTO):ListarUsuarioConPerfil{
@@ -56,6 +56,20 @@ export class RolMapper{
             apellidoPaterno: apiResponsable. apellidoPaterno,
             idPersona: apiResponsable.idPersona,
             nombres: apiResponsable.nombres,
+        }
+    }
+
+    static fromApiToDomainAgregar(apiAgregarPerfil:AgregarPerfilConUsuarioDTO):AgregarPerfilConUsuario{
+        return{
+            codigoPerfil: apiAgregarPerfil.codigoPerfil,
+            codigoPersona: apiAgregarPerfil.codigoPersona
+        }
+    }
+
+    static fromDomainToApiAgregar(apiAgregarPerfil:AgregarPerfilConUsuario):AgregarPerfilConUsuarioDTO{
+        return{
+            codigoPerfil: apiAgregarPerfil.codigoPerfil,
+            codigoPersona: apiAgregarPerfil.codigoPersona
         }
     }
 }

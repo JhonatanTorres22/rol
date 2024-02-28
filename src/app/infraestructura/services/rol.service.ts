@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { EliminarUsuarioConPerfil, ListarResponsable, ListarRol, ListarUsuarioConPerfil } from 'src/app/core/models/rol.model';
+import { AgregarPerfilConUsuario, EliminarUsuarioConPerfil, ListarResponsable, ListarRol, ListarUsuarioConPerfil } from 'src/app/core/models/rol.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { RolMapper } from 'src/app/core/mappers/rol.mappers';
+import { AgregarPerfilConUsuarioDTO } from '../dto/rol.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -44,10 +45,10 @@ export class RolService {
    }
 
    listarPerfil():Observable<ListarRol[]>{
-    return this.httpClient.get<any>(this.urlEnviro + this.urlListarResponsables).pipe(
+    return this.httpClient.get<any>(this.urlEnviro + this.urlListarPerfil).pipe(
       map((response) => {
         if(response && response.isSuccess && response.data) {
-          return response.data.map(RolMapper.fromApiToDOmainResponsable);
+          return response.data.map(RolMapper.fromApiToDomainRol);
         }
         else{
           console.error('La respuesta del servicio no tiene la estructura esperada:', response);
@@ -75,5 +76,10 @@ export class RolService {
     const requestBody:EliminarUsuarioConPerfil = {codigoPersonaPerfil}
     console.log(requestBody, '**');
     return this.httpClient.delete<EliminarUsuarioConPerfil>(this.urlEnviro + this.urlEliminarUsuarioConPerfil,  {body:requestBody})
+   }
+
+   agregarPerfilConUsuario(agregar:AgregarPerfilConUsuario):Observable<AgregarPerfilConUsuario>{
+    let apiPersona = RolMapper.fromDomainToApiAgregar(agregar);
+    return this.httpClient.post<AgregarPerfilConUsuarioDTO>(this.urlEnviro + this.urlcrearPerfil, agregar).pipe(map(RolMapper.fromApiToDomainAgregar))
    }
 }

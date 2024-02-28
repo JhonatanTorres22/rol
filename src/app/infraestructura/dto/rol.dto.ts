@@ -18,3 +18,8 @@ export interface ListarResponsableDTO{
     apellidoPaterno: string,
     apellidoMaterno: string
 }
+
+export interface AgregarPerfilConUsuarioDTO{
+     codigoPersona:number,
+     codigoPerfil:number,
+ }

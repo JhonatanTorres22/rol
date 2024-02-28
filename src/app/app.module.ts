@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmptyRouteComponent } from './empty-route/empty-route.component';
 import { RolModule } from './modules/rol/rol.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RolModule } from './modules/rol/rol.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RolModule
+    RolModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

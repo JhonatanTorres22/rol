@@ -1,1 +1,24 @@
-<p>add-edit-usuario-con-rol works!</p>
+<form [formGroup]="formUsuarioConRol">
+    <h2 mat-dialog-title> {{operacion}} </h2>
+
+    <mat-dialog-content>
+
+        <mat-form-field class="formulario">
+            <mat-label>USUARIO</mat-label>
+            <input matInput [(ngModel)]="nombres" formControlName="codigoPersona">
+        </mat-form-field>
+
+        <mat-form-field class="formulario">
+            <mat-label>PERFIL</mat-label>
+            <mat-select formControlName="codigoPerfil">
+                <mat-option *ngFor="let rol of listarRol" [value]="rol.idPerfil"> {{rol.descripcion}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formUsuarioConRol.get('codigoPerfil')?.hasError('required')"> ESTE CAMPO ES REQUERIDO </mat-error>
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-raised-button (click)="guardar()" color="warn" [disabled]="formUsuarioConRol.invalid"> GUARDAR</button>
+        <button mat-raised-button mat-dialog-close> CANCELAR </button>
+    </mat-dialog-actions>
+</form>

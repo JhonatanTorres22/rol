@@ -25,7 +25,7 @@ export class ListarResponsable{
     ){}
 }
 
-export class crearPerfilConUsuario{
+export class AgregarPerfilConUsuario{
     constructor(
         public codigoPersona:number,
         public codigoPerfil:number,
