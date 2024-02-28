@@ -46,7 +46,12 @@ export class AddEditUsuarioConRolComponent implements OnInit {
     Swal.fire({
       icon: 'question',
       title: '¿CONFIRMAR?',
-      text: '¿ESTÁ SEGURO QUE DESEA GUARDAR LOS CAMBIOS?'
+      text: '¿ESTÁ SEGURO QUE DESEA GUARDAR LOS CAMBIOS?',
+      showCancelButton: true,
+      confirmButtonText: "GUARDAR",
+      cancelButtonText: "CANCELAR",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
     }).then((result) => {
       if(result.isConfirmed){
         this.rolService.agregarPerfilConUsuario(agregarPerfil).subscribe({
